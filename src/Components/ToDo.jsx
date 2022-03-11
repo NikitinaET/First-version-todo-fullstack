@@ -1,36 +1,31 @@
-import {useState} from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+import { changeText } from '../store/actions';
 import { ToastContainer, toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
-const url = 'http://localhost:1025/api/tasks/';
 
-function ToDo({todo, toggleTask, removeTask}) {
+function ToDo({ todo, toggleTask, removeTask }) {
     const [editMode, setEditMode] = useState(false);
     const [current, setCurrent] = useState(todo.task);
     const [prev, setPrev] = useState(current);
-    
-    const changeText =  (e) => {       
-      setCurrent(e.target.value);
-    }
-    
-    const changeTask = async (text) => {
-        try {
-            const input = text.trim();
-            if (input) {
-                await axios.put(url+todo._id, {task: input});
-                setEditMode(false);
-                setCurrent(current.trim() || prev);
-            } else {
-                toast.error('🦄 You don\'t change text');
-            }   
-        }
-        catch (e) {
-            toast.error(e.message);
-            console.log(e.message);
-        }     
+    const dispatch = useDispatch();
+
+    const changeInput = (e) => {
+        setCurrent(e.target.value);
     }
 
-    const handleKeyPress =  (e) => {
+    const changeTask = (text) => {
+        const input = text.trim();
+        if (input) {
+            dispatch(changeText(todo._id, input));
+            setEditMode(false);
+            setCurrent(current.trim() || prev);
+        } else {
+            toast.error('🦄 You don\'t change text');
+        }
+    }
+
+    const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             changeTask(e.target.value);
@@ -48,33 +43,33 @@ function ToDo({todo, toggleTask, removeTask}) {
     }
 
     return (
-        <div key={todo.id} className="item-todo">
+        <div key={todo._id} className="item-todo">
             <label className={`green-arrow__label ${todo.complete ? "green-arrow__label_completed" : ""}`}>
-            <input type="checkbox" className="green-arrow" onChange={() => {toggleTask(todo)}}/>
+                <input type="checkbox" className="green-arrow" onChange={() => { toggleTask(todo) }} />
             </label>
             {!editMode ? <div className={todo.complete ? "item-text strike" : "item-text"}
-            onDoubleClick={handleDoubleClick}
+                onDoubleClick={handleDoubleClick}
             >
                 {current}
             </div>
-            : <input 
-            type="text"
-            value={current}
-            onInput={changeText}
-            onKeyDown={handleKeyPress}
-            autoFocus={true}
-            className="item-change"
-            onBlur={loseFocus}
-            />}
+                : <input
+                    type="text"
+                    value={current}
+                    onInput={changeInput}
+                    onKeyDown={handleKeyPress}
+                    autoFocus={true}
+                    className="item-change"
+                    onBlur={loseFocus}
+                />}
             <div className="item-delete"
-            onClick={() => removeTask(todo)}
+                onClick={() => removeTask(todo)}
             >
                 &times;
             </div>
             <ToastContainer
-             hideProgressBar={false}
-             autoClose={2000}
-             />
+                hideProgressBar={false}
+                autoClose={1000}
+            />
         </div>
     )
 }

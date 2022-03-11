@@ -5,16 +5,6 @@ const router = express.Router();
 
 router.get('', task_controller.task_details);
 router.post('', task_controller.task_create);
-/*router.get('', async (req, res) => {
-    try {
-        const tasks = await Task.find();
-        res.send(tasks);
-    }
-    catch (e){
-        res.send(e);
-    }
-});*/
-
 router.put('/:id', task_controller.task_update);
 router.put('', task_controller.tasks_update);
 router.delete('/:id', task_controller.task_delete);

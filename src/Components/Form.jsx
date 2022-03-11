@@ -1,14 +1,17 @@
 import {useState} from 'react';
   function ToDoForm({addTask, allCompleted, totalLength, toggleTodos}) {
     const [userInput, setUserInput] = useState('');
+
     const handleSubmit = (e) => {
         e.preventDefault();
         addTask(userInput);
         setUserInput('');
     }
+
     const handleChange = (e) => {
         setUserInput(e.currentTarget.value);
     }
+
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             handleSubmit(e);
