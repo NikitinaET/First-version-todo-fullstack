@@ -22,6 +22,7 @@ exports.task_details = async (req, res) => {
 
 exports.task_update = async (req, res) => {
     //console.log('update')
+    console.log(req.body)
     try {
         const task = await Task.findOneAndUpdate(
             { _id: req.params.id },

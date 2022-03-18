@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { changeText } from '../store/actions';
+import { changeTodo } from '../store/createSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,8 +16,9 @@ function ToDo({ todo, toggleTask, removeTask }) {
 
     const changeTask = (text) => {
         const input = text.trim();
+        console.log('input', input)
         if (input) {
-            dispatch(changeText(todo._id, input));
+            dispatch(changeTodo({_id: todo._id, text: input}));
             setEditMode(false);
             setCurrent(current.trim() || prev);
         } else {
