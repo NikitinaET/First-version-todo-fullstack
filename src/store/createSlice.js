@@ -33,7 +33,7 @@ const todoSlice = createSlice({
 
         .addCase(changeTodo.fulfilled, (state, action) => {
             state.items = state.items.map(todo => ({
-                ...todo, task: todo._id === action.payload._id ? todo.task: action.payload.text  
+                ...todo, task: todo._id !== action.payload._id ? todo.task: action.payload.text  
             }))
         })
 
@@ -58,7 +58,7 @@ async () => {
         throw new Error('🤔 Server error, cannot get tasks');
     }
 });
-//, , , ,  
+ 
 export const addTodo = createAsyncThunk('todos/addTodo',
 async (text) => {
     try {
@@ -122,7 +122,6 @@ export const changeTodo = createAsyncThunk('todos/changeTodo',
 async ( {_id, text} ) => {
     try {
         await axios.put(url + _id, {task: text});
-        //console.log(text);
         return { _id, text };
     }
     catch (e){

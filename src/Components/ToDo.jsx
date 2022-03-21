@@ -16,7 +16,6 @@ function ToDo({ todo, toggleTask, removeTask }) {
 
     const changeTask = (text) => {
         const input = text.trim();
-        console.log('input', input)
         if (input) {
             dispatch(changeTodo({_id: todo._id, text: input}));
             setEditMode(false);
