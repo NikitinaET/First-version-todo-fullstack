@@ -138,11 +138,10 @@ async ( {_id, text} ) => {
 });
 
 export const changeDescription = createAsyncThunk('todos/changeDescription',
-async ( {_id, text} ) => {
-    console.log(text)
+async ( {_id, description} ) => {
     try {
-        await axios.put(url + _id, {description: text});
-        return { _id, text };
+        await axios.put(url + _id, {description});
+        return { _id, description };
     }
     catch (e){
         toast.error("🤔 Cannot change description, server error: " + e);

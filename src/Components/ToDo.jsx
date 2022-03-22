@@ -27,8 +27,7 @@ function ToDo({ todo, toggleTask, removeTask }) {
     const changeTask = (text) => {
         const input = text.trim();
         if (input) {
-            const res = dispatch(changeTodo({_id: todo._id, text: input}));
-            console.log('change', res);
+            dispatch(changeTodo({_id: todo._id, text: input}));
             setEditMode(false);
             setCurrent(current.trim() || prev);
         } else {
@@ -39,8 +38,7 @@ function ToDo({ todo, toggleTask, removeTask }) {
     const addDescription = (text) => {
         const input = text.trim();
         if (input) {
-            const res = dispatch(changeDescription({_id: todo._id, description: input}));
-            console.log(res);
+            dispatch(changeDescription({_id: todo._id, description: input}));
             setEditMode2(false);
             setCurrent2(current2.trim() || prev2);
         } else {
