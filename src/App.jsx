@@ -1,12 +1,13 @@
 import Header from './Components/Header.jsx';
 import ToDo from './Components/ToDo.jsx';
-import ToDoForm from './Components/Form.jsx';
+import ToDoForm from './Components/TodoForm.jsx';
 import Nav from './Components/Nav.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loadTodo, addTodo, deleteTodo, deleteCompleted, setComplAll,  toggleTodo } from './store/createSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
 
 const url = 'http://localhost:1025/api/tasks/';
 
@@ -16,7 +17,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadTodo()); 
+    dispatch(loadTodo())
   }, []);
 
   const tasks = useSelector(state => state.todo.items);
@@ -55,9 +56,22 @@ function App() {
     dispatch(setComplAll(completed));
     if (completed) {toast.success('👯‍♂️ Yay!');}
   }
+
+
   const activeLength = tasks.filter(todo => !todo.complete).length;
   const totalLength = tasks.length;
 
+  const columns = [
+    {field: 'name', headerName: 'Name', width: 180, },
+    {
+        field: 'dateCreated',
+        headerName: 'Date Created',
+        type: 'date',
+        width: 500,
+        editable: true,
+      }
+];
+  
     return (
     <div className="App">
     <Header />
@@ -68,21 +82,32 @@ function App() {
       toggleTodos={setCompletedAll}
       allCompleted={!activeLength}
       />
+      <div style={{ height: 100}}>
+        <DataGrid
+        columns={columns}
+        
+      />
+      </div>
+
       {tasks.filter(todo =>
         (filter === 'All') ||
         (filter === 'Active' && !todo.complete) ||
         (filter === 'Completed' && todo.complete)
       ).map(todo => {
-        return (
-          <ToDo
+
+        return ( 
+              <ToDo
           todo={todo}
           key={todo._id}
           removeTask={() => removeTask(todo._id)}
           toggleTask={() => handleToggle(todo)}
           changeTask={addTask}
-          />
+          /> 
         )
-      })}
+      })
+      }
+      
+    
       <Nav
       itemsLeft={activeLength}
       removeCompleted={removeCompleted}

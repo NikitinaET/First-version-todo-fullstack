@@ -33,7 +33,7 @@ const todoSlice = createSlice({
 
         .addCase(changeTodo.fulfilled, (state, action) => {
             state.items = state.items.map(todo => ({
-                ...todo, task: todo._id !== action.payload._id ? todo.task: action.payload.text  
+                ...todo, task: todo._id !== action.payload._id ? todo.task: action.payload.text
             }))
         })
 
@@ -44,6 +44,13 @@ const todoSlice = createSlice({
         .addCase(setComplAll.fulfilled, (state, action) => {
             state.items = state.items.map(todo => ({ ...todo, complete: action.payload.complete }))
         })
+
+        .addCase(changeDescription.fulfilled, (state, action) => {
+            state.items = state.items.map(todo => ({
+                ...todo, description: todo._id === action.payload._id ? todo.description: action.payload.text  
+            }))
+        })
+        
     },
 });
 
@@ -126,6 +133,19 @@ async ( {_id, text} ) => {
     }
     catch (e){
         toast.error("🤔 Cannot change task, server error: " + e);
+        throw new Error('🤔 Server error, can not update task');
+    }
+});
+
+export const changeDescription = createAsyncThunk('todos/changeDescription',
+async ( {_id, text} ) => {
+    console.log(text)
+    try {
+        await axios.put(url + _id, {description: text});
+        return { _id, text };
+    }
+    catch (e){
+        toast.error("🤔 Cannot change description, server error: " + e);
         throw new Error('🤔 Server error, can not update task');
     }
 });

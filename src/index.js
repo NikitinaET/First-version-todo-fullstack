@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import './App.css';
 import App from './App.jsx';
-//import thunk from 'redux-thunk'
-import { /*applyMiddleware, */combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 import todoSlice from './store/createSlice';
 import { Provider } from 'react-redux';
 import { configureStore } from "@reduxjs/toolkit";

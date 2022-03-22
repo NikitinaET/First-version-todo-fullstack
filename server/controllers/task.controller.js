@@ -1,3 +1,4 @@
+const { RequestPageTwoTone } = require('@mui/icons-material');
 const Task = require('../models/task.model');
 
 exports.task_create = async (req, res) => {
@@ -10,7 +11,7 @@ exports.task_create = async (req, res) => {
     }
 };
 
-exports.task_details = async (req, res) => {
+exports.tasks_details = async (req, res) => {
     //console.log('get')
     try {
         const tasks = await Task.find();
@@ -22,7 +23,6 @@ exports.task_details = async (req, res) => {
 
 exports.task_update = async (req, res) => {
     //console.log('update')
-    console.log(req.body)
     try {
         const task = await Task.findOneAndUpdate(
             { _id: req.params.id },
@@ -56,7 +56,6 @@ exports.tasks_delete = async (req, res) => {
 };
 
 exports.tasks_update = async (req, res) => {
-    console.log('all completed')
     try {
         //const task = await Task.updateMany({ complete: req.body.completed });
         const task = await Task.updateMany({$set: req.body})
@@ -66,3 +65,16 @@ exports.tasks_update = async (req, res) => {
         res.status(400).send(error.message);
     }
 };
+
+exports.task_details = async (req, res) => {
+    try {
+        console.log(req)
+        //const task = await Task.findById({ _id: req.params.id }, { created: 1, task: 0 });
+        const task = await Task.findById({ _id: req.params.id });
+        res.send(task);
+        console.log(task)
+    }
+    catch (error){
+        res.status(400).send(error.message);
+    }
+}
